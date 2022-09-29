@@ -1,0 +1,2 @@
+# Stocktrading
+A fun game

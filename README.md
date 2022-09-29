@@ -1,3 +1,2 @@
 # Stocktrading
-A fun game
-Completed in one day
+A fun game 

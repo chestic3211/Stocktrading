@@ -10,7 +10,7 @@ import tkinter as tk
 import datetime as dt
 
 
-
+# set variable
 db = TinyDB('data.json')
 stock = 'TSM'
 data = yf.download(tickers=stock, period='1d', interval='1m')
@@ -18,7 +18,7 @@ balance_set = 0
 stock_list = []
 stock_dict = {}
 date_dict = {}
-
+# button funtion
 def Robot_start(new_stock):
     global date_dict
     date = dt.date.today()
@@ -43,17 +43,20 @@ def Robot_end(new_stock):
     del date_dict[new_stock]
     db.update({"buytime": date_dict}, User.name == "robotstock")
 
+# stock purchase day
 def update_date():
     global date_dict
     result = db.search(User.name == "robotstock")
     date_dict = result[0]['buytime']
 
+# add to database
 def insert_data():
     db.insert({'balance': 5000})
     db.insert({'stock':stock_list})
     insert_data()
 
 User = Query()
+# update balance
 def update_balance():
     global balance_set
     result = db.search(User.name == "user1")
@@ -62,15 +65,18 @@ def add_balance():
     global balance_set
     result = db.search(User.name == "user1")
     db.update({"balance": balance_set}, User.name == "user1")
+# add stock ticket to list box
 def update_stock_list():
     global  stock_list
     result = db.search(User.name == "userstock")
     stock_list = result[0]['stock']
+
 def upload_stock_list(new_stock):
     global stock_list
     result = db.search(User.name == "userstock")
     stock_list.append(new_stock)
     db.update({"stock":stock_list}, User.name == "userstock")
+
 def change_balance(new_stock):
     global balance_set
     result = db.search(User.name == "user1")
@@ -79,6 +85,7 @@ def change_balance(new_stock):
     price = todays_data['Close'][0]
     balance_set = balance_set - price
     db.update({"balance": balance_set}, User.name == "user1")
+
 def upload_stock_dict(new_stock):
     global stock_dict
     result = db.search(User.name == "userstock")
@@ -89,10 +96,12 @@ def upload_stock_dict(new_stock):
     change_balance(new_stock)
     update_balance()
     db.update({"stockprice": stock_dict}, User.name == "userstock")
+
 def update_stock_dict():
     global stock_dict
     result = db.search(User.name == "userstock")
     stock_dict = result[0]['stockprice']
+
 def delete_stock_list(new_stock):
     global stock_list
     result = db.search(User.name == "userstock")
